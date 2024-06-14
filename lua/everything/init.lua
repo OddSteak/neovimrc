@@ -10,6 +10,7 @@ local EveryGroup = augroup('everyGroup', {})
 local autocmd = vim.api.nvim_create_autocmd
 local yank_group = augroup('HighlightYank', {})
 
+-- reload modules
 function R(name)
     require("plenary.reload").reload_module(name)
 end
@@ -20,6 +21,7 @@ vim.filetype.add({
     }
 })
 
+-- highlight yanked text
 autocmd('TextYankPost', {
     group = yank_group,
     pattern = '*',
@@ -31,6 +33,7 @@ autocmd('TextYankPost', {
     end,
 })
 
+-- remove trailing spaces
 autocmd({"BufWritePre"}, {
     group = EveryGroup,
     pattern = "*",
