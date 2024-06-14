@@ -20,6 +20,8 @@ vim.opt.undofile = true
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
 
+vim.opt.showmode = false
+
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
@@ -33,3 +35,8 @@ vim.opt.updatetime = 50
 
 -- vim.opt.colorcolumn = "80"
 
+vim.g.have_nerd_font = true
+
+vim.opt.signcolumn = 'yes'
+
+vim.opt.updatetime = 750

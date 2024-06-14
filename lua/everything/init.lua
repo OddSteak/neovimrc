@@ -34,7 +34,7 @@ autocmd('TextYankPost', {
 })
 
 -- remove trailing spaces
-autocmd({"BufWritePre"}, {
+autocmd({ "BufWritePre" }, {
     group = EveryGroup,
     pattern = "*",
     command = [[%s/\s\+$//e]],
@@ -43,21 +43,27 @@ autocmd({"BufWritePre"}, {
 autocmd('LspAttach', {
     group = EveryGroup,
     callback = function(e)
-        local opts = { buffer = e.buf }
-        vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-        vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
-        vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
-        vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
-        vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
-        vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
-        vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
+        -- local opts = { buffer = e.buf }
+        local map = function(keys, func, desc)
+            vim.keymap.set('n', keys, func, { buffer = e.buf, desc = 'LSP: ' .. desc })
+        end
+        map("<leader>vd", function() vim.diagnostic.open_float() end, 'open diagnostic float')
+        map('gd', function() require('telescope.builtin').lsp_definitions({jump_type="vsplit"}) end, '[G]oto [D]efinition')
+        map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+        map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+        map("[d", function() vim.diagnostic.goto_next() end, 'next error')
+        map("]d", function() vim.diagnostic.goto_prev() end, 'prev error')
+        map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+        map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+        map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
+        map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+        map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+        map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+        map('K', vim.lsp.buf.hover, 'Hover Documentation')
         -- vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
-        vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
-        vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
     end
 })
 
 vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
-
