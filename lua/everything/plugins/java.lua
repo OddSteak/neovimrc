@@ -9,6 +9,8 @@ return {
     'MunifTanjim/nui.nvim',
     'neovim/nvim-lspconfig',
     'mfussenegger/nvim-dap',
+    'rcarriga/nvim-dap-ui',
+    'nvim-neotest/nvim-nio',
     {
       'williamboman/mason.nvim',
       opts = {
@@ -29,5 +31,6 @@ return {
             ["$/progress"] = function(_, result, ctx) end,
 	        },
         })
+        require("dapui").setup()
     end
 }

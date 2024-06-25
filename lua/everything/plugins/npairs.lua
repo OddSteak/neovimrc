@@ -103,10 +103,6 @@ return {
           Rule("$", "$", "lua")
             :with_pair(ts_conds.is_not_ts_node({'function'}))
         })
-                -- put this to setup function and press <a-e> to use fast_wrap
-        npairs.setup({
-            fast_wrap = {},
-        })
 
         -- change default fast_wrap
         npairs.setup({
@@ -123,7 +119,7 @@ return {
               highlight = 'Search',
               highlight_grey='Comment'
             },
-        })
+    })
     end
     -- use opts = {} for passing setup options
     -- this is equalent to setup({}) function

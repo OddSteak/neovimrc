@@ -29,9 +29,10 @@ return {
             ensure_installed = {
                 "cssls",
                 "lua_ls",
-                "pyright",
+                "pylsp",
                 "bashls",
                 "clangd",
+                "sqlls",
                 "tsserver",
             },
             handlers = {
@@ -50,6 +51,7 @@ return {
                             Lua = {
                                 diagnostics = {
                                     globals = { "vim", "it", "describe", "before_each", "after_each" },
+                                    disable = { 'missing-fields' },
                                 }
                             }
                         }
@@ -67,10 +69,10 @@ return {
                 end,
             },
             mapping = cmp.mapping.preset.insert({
-                ['<C-k>'] = cmp.mapping.select_prev_item(cmp_select),
-                ['<C-j>'] = cmp.mapping.select_next_item(cmp_select),
-                ['<C-l>'] = cmp.mapping.confirm({ select = true }),
-                ["<C-Space>"] = cmp.mapping.complete(),
+                ['<C-d>'] = cmp.mapping.select_prev_item(cmp_select),
+                ['<C-s>'] = cmp.mapping.select_next_item(cmp_select),
+                ['<C-f>'] = cmp.mapping.confirm({ select = true }),
+                -- ["<C-Space>"] = cmp.mapping.complete(),
             }),
             sources = cmp.config.sources({
                 { name = 'nvim_lsp' },
@@ -86,7 +88,7 @@ return {
                 focusable = false,
                 style = "minimal",
                 border = "rounded",
-                source = "always",
+                source = true,
                 header = "",
                 prefix = "",
             },
