@@ -43,7 +43,7 @@ autocmd({ "BufWritePre" }, {
 autocmd('LspAttach', {
     group = EveryGroup,
     callback = function(e)
-        -- local opts = { buffer = e.buf }
+        local opts = { buffer = e.buf }
         local dap = require('dap')
         local dapui = require('dapui')
         local map = function(keys, func, desc)
@@ -67,7 +67,7 @@ autocmd('LspAttach', {
         map('<leader>so', dap.step_over, 'dap step over')
         map('<leader>si', dap.step_into, 'dap step into')
         map('<leader>ro', dap.repl.open, 'dap repl open')
-        -- vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+        vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
     end
 })
 
