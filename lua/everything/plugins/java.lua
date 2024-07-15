@@ -25,6 +25,11 @@ return {
   config = function()
         require('java').setup()
         require("lspconfig").jdtls.setup({
+            init_options = {
+                bundles = {
+                    vim.fn.glob("/home/dell/.m2/repository/com/microsoft/java/com.microsoft.java.debug.plugin/0.53.0/com.microsoft.java.debug.plugin-0.53.0.jar", true)
+                };
+            },
             handlers = {
             -- By assigning an empty function, you can remove the notifications
             -- printed to the cmd
