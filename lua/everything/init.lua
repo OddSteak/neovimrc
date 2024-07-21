@@ -21,6 +21,10 @@ vim.filetype.add({
     }
 })
 
+vim.filetype.add({
+    pattern = { [".*/hypr/.*%.conf"] = "hyprlang" },
+})
+
 -- highlight yanked text
 autocmd('TextYankPost', {
     group = yank_group,
@@ -43,6 +47,14 @@ autocmd({ "BufWritePre" }, {
 autocmd('LspAttach', {
     group = EveryGroup,
     callback = function(e)
+
+        -- don't use lsp for these units
+        local blackcwd = "/home/dell/uwa/sem2_2024/cits2002/src"
+        local blackcwd2 = "/home/dell/uwa/sem2_2024/cits2211/src"
+        if vim.fn.getcwd() == blackcwd or vim.fn.getcwd() == blackcwd2 then
+            vim.cmd("LspStop")
+        end
+
         local opts = { buffer = e.buf }
         local dap = require('dap')
         local dapui = require('dapui')
@@ -68,6 +80,18 @@ autocmd('LspAttach', {
         map('<leader>si', dap.step_into, 'dap step into')
         map('<leader>ro', dap.repl.open, 'dap repl open')
         vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+    end
+})
+
+-- Hyprlang LSP
+vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
+    pattern = { "*.hl", "hypr*.conf" },
+    callback = function(event)
+        vim.lsp.start {
+            name = "hyprlang",
+            cmd = { "/home/dell/go/bin/hyprls" },
+            root_dir = vim.fn.getcwd(),
+        }
     end
 })
 
