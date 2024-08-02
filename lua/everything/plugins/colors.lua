@@ -1,10 +1,11 @@
-function ColorMyPencils(color)
-    color = color or "catppuccin"
+function ColorMyPencils()
+    local color = "rose-pine-main"
+    -- vim.cmd("colorscheme rose-pine-main")
     vim.cmd.colorscheme(color)
 
-    -- vim.api.nvim_set_hl(0, "Normal", { bg = "#000000" })
-    -- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#000000" })
-    -- vim.api.nvim_set_hl(0, "NormalNC", { bg = "#000000" })
+    -- vim.api.nvim_set_hl(0, "Normal", { bg = "#1F1828" })
+    -- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#1F1828" })
+    -- vim.api.nvim_set_hl(0, "NormalNC", { bg = "#1F1828" })
 end
 
 return {
@@ -14,14 +15,14 @@ return {
             require("tokyonight").setup({
                 -- your configuration comes here
                 -- or leave it empty to use the default settings
-                style = "storm",        -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
+                style = "night",        -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
                 transparent = false,    -- Enable this to disable setting the background color
                 terminal_colors = true, -- Configure the colors used when opening a `:terminal` in Neovim
                 styles = {
                     -- Style to be applied to different syntax groups
                     -- Value is any valid attr-list value for `:help nvim_set_hl`
-                    comments = { italic = false },
-                    keywords = { italic = false },
+                    comments = { italic = true },
+                    keywords = { italic = true },
                     -- Background styles. Can be "dark", "transparent" or "normal"
                     sidebars = "dark", -- style for sidebars, see below
                     floats = "dark",   -- style for floating windows
@@ -35,8 +36,8 @@ return {
         name = "rose-pine",
         config = function()
             require("rose-pine").setup({
-                variant = "moon", -- auto, main, moon, or dawn
-                dark_variant = "moon", -- main, moon, or dawn
+                variant = "main", -- auto, main, moon, or dawn
+                dark_variant = "main", -- main, moon, or dawn
                 dim_inactive_windows = false,
                 extend_background_behind_borders = true,
 
@@ -101,7 +102,6 @@ return {
                 end,
             })
 
-            vim.cmd("colorscheme rose-pine")
             ColorMyPencils()
         end
     },

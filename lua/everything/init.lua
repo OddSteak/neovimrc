@@ -47,13 +47,12 @@ autocmd({ "BufWritePre" }, {
 autocmd('LspAttach', {
     group = EveryGroup,
     callback = function(e)
-
         -- don't use lsp for these units
-        local blackcwd = "/home/dell/uwa/sem2_2024/cits2002/src"
-        local blackcwd2 = "/home/dell/uwa/sem2_2024/cits2211/src"
-        if vim.fn.getcwd() == blackcwd or vim.fn.getcwd() == blackcwd2 then
-            vim.cmd("LspStop")
-        end
+        -- local blackcwd = "/home/dell/uwa/sem2_2024/cits2002/src"
+        -- local blackcwd2 = "/home/dell/uwa/sem2_2024/cits2211/src"
+        -- if vim.fn.getcwd() == blackcwd or vim.fn.getcwd() == blackcwd2 then
+        --     vim.cmd("LspStop")
+        -- end
 
         local opts = { buffer = e.buf }
         local dap = require('dap')
@@ -93,6 +92,12 @@ vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
             root_dir = vim.fn.getcwd(),
         }
     end
+})
+
+vim.api.nvim_create_autocmd("BufEnter", {
+    callback = function()
+        vim.opt.formatoptions = vim.opt.formatoptions - { "c", "r", "o" }
+    end,
 })
 
 vim.g.netrw_browse_split = 0

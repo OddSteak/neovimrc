@@ -8,7 +8,8 @@ vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
-vim.opt.smartindent = true
+-- vim.opt.autoindent = true
+-- vim.opt.smartindent = true
 
 vim.opt.wrap = false
 
@@ -40,3 +41,4 @@ vim.g.have_nerd_font = true
 vim.opt.signcolumn = 'yes'
 
 vim.opt.updatetime = 750
+vim.api.nvim_set_var("c_syntax_for_h", 1)

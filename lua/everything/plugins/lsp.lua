@@ -34,6 +34,8 @@ return {
                 "clangd",
                 "sqlls",
                 "tsserver",
+                "rust_analyzer",
+                "marksman",
             },
             handlers = {
                 function(server_name) -- default handler (optional)
@@ -54,6 +56,16 @@ return {
                                     disable = { 'missing-fields' },
                                 }
                             }
+                        }
+                    }
+                end,
+
+                ["clangd"] = function()
+                    local lspconfig = require("lspconfig")
+                    lspconfig.clangd.setup {
+                        cmd = {
+                            "clangd",
+                            "--fallback-style=Microsoft"
                         }
                     }
                 end,
