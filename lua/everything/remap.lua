@@ -56,6 +56,12 @@ vim.keymap.set(
 
 vim.keymap.set(
     "n",
+    "<leader>tt",
+    "o\\begin{displaymath}<CR>\\begin{array}{|c c| c |}<CR>\\hline<CR>P & Q & \\\\<CR>\\hline<CR>\\hline<CR>\\end{array}<CR>\\end{displaymath}<Esc>6kf};i"
+)
+
+vim.keymap.set(
+    "n",
     "<leader>jp",
     "oSystem.out.println();<Esc>hi"
 )

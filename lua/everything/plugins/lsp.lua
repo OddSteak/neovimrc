@@ -65,7 +65,7 @@ return {
                     lspconfig.clangd.setup {
                         cmd = {
                             "clangd",
-                            "--fallback-style=Microsoft"
+                            "--fallback-style=Webkit"
                         }
                     }
                 end,

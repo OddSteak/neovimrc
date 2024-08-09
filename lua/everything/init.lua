@@ -6,9 +6,10 @@ require("everything.lazy_init")
 
 local augroup = vim.api.nvim_create_augroup
 local EveryGroup = augroup('everyGroup', {})
+local EveryGroup = augroup('templates', {})
+local yank_group = augroup('HighlightYank', {})
 
 local autocmd = vim.api.nvim_create_autocmd
-local yank_group = augroup('HighlightYank', {})
 
 -- reload modules
 function R(name)
@@ -42,6 +43,40 @@ autocmd({ "BufWritePre" }, {
     group = EveryGroup,
     pattern = "*",
     command = [[%s/\s\+$//e]],
+})
+
+autocmd("BufNewFile", {
+    group = EveryGroup,
+    pattern = "*.tex",
+    callback = function()
+        vim.cmd("0r ~/.config/nvim/temp/skeleton.tex")
+        vim.cmd("1;/^\\\\section/")
+    end
+})
+
+autocmd("BufRead", {
+    group = EveryGroup,
+    pattern = { "*.tex" },
+    callback = function()
+        vim.cmd("1;/^\\\\section/")
+    end
+})
+
+autocmd("BufNewFile", {
+    group = EveryGroup,
+    pattern = "*.c",
+    callback = function()
+        vim.cmd("0r ~/.config/nvim/temp/skeleton.c")
+        vim.cmd("1;/^{/")
+    end
+})
+
+autocmd("BufRead", {
+    group = EveryGroup,
+    pattern = { "*.c", "*.h" },
+    callback = function()
+        vim.cmd("1;/^{/")
+    end
 })
 
 autocmd('LspAttach', {
@@ -94,6 +129,7 @@ vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
     end
 })
 
+-- don't continue comment in new line
 vim.api.nvim_create_autocmd("BufEnter", {
     callback = function()
         vim.opt.formatoptions = vim.opt.formatoptions - { "c", "r", "o" }

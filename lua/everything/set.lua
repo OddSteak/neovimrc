@@ -8,6 +8,8 @@ vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
+vim.opt.mouse = "a"
+
 -- vim.opt.autoindent = true
 -- vim.opt.smartindent = true
 
@@ -34,7 +36,7 @@ vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
 
--- vim.opt.colorcolumn = "80"
+vim.opt.colorcolumn = "120"
 
 vim.g.have_nerd_font = true
 
