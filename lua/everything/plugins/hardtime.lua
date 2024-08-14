@@ -11,5 +11,7 @@ return {
             ["<Right>"] = {},
             ["<Left>"] = {},
         },
+
+        disable_mouse = false
     }
 }

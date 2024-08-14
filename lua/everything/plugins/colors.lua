@@ -11,6 +11,7 @@ end
 return {
     {
         "folke/tokyonight.nvim",
+        lazy = true,
         config = function()
             require("tokyonight").setup({
                 -- your configuration comes here
@@ -109,6 +110,7 @@ return {
     {
         "catppuccin/nvim",
         name = "catppuccin",
+        lazy = true,
         priority = 1000,
         config = function()
             require("catppuccin").setup({

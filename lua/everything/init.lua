@@ -62,12 +62,16 @@ autocmd("BufRead", {
     end
 })
 
+-- start c files from first function
 autocmd("BufNewFile", {
     group = EveryGroup,
     pattern = "*.c",
     callback = function()
-        vim.cmd("0r ~/.config/nvim/temp/skeleton.c")
-        vim.cmd("1;/^{/")
+        -- catch errors because c file might in inferior coding style
+        pcall(function()
+            vim.cmd("0r ~/.config/nvim/temp/skeleton.c")
+            vim.cmd("1;/^{/")
+        end)
     end
 })
 
@@ -75,7 +79,17 @@ autocmd("BufRead", {
     group = EveryGroup,
     pattern = { "*.c", "*.h" },
     callback = function()
-        vim.cmd("1;/^{/")
+        pcall(function()
+            vim.cmd("1;/^{/")
+        end)
+    end
+})
+
+autocmd("BufRead", {
+    group = EveryGroup,
+    pattern = { "pad.md" },
+    callback = function()
+        vim.cmd("normal! G")
     end
 })
 
