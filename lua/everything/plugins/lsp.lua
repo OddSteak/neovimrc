@@ -8,15 +8,22 @@ return {
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-cmdline",
         "hrsh7th/nvim-cmp",
+        "hrsh7th/cmp-nvim-lsp-document-symbol",
+        "hrsh7th/cmp-nvim-lsp-signature-help",
         "L3MON4D3/LuaSnip",
+        "rafamadriz/friendly-snippets",
         "saadparwaiz1/cmp_luasnip",
         "j-hui/fidget.nvim",
-      { 'folke/neodev.nvim', opts = {} },
+        { 'folke/neodev.nvim', opts = {} },
     },
+
+    lazy = false,
 
     config = function()
         local cmp = require('cmp')
         local cmp_lsp = require("cmp_nvim_lsp")
+        local luasnip = require('luasnip')
+
         local capabilities = vim.tbl_deep_extend(
             "force",
             {},
@@ -39,7 +46,6 @@ return {
             },
             handlers = {
                 function(server_name) -- default handler (optional)
-
                     require("lspconfig")[server_name].setup {
                         capabilities = capabilities
                     }
@@ -72,27 +78,92 @@ return {
             }
         })
 
-        local cmp_select = { behavior = cmp.SelectBehavior.Select }
+        luasnip.config.set_config {
+            history = true,
+            updateevents = "TextChanged,TextChangedI",
+            enable_autosnippets = true,
+            use_show_condition = false
+        }
 
+        require("luasnip.loaders.from_vscode").lazy_load()
+
+        -- local cmp_select = { behavior = cmp.SelectBehavior.Select }
         cmp.setup({
             snippet = {
                 expand = function(args)
-                    require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+                    luasnip.lsp_expand(args.body)
                 end,
             },
-            mapping = cmp.mapping.preset.insert({
-                ['<C-d>'] = cmp.mapping.select_prev_item(cmp_select),
-                ['<C-s>'] = cmp.mapping.select_next_item(cmp_select),
-                ['<C-f>'] = cmp.mapping.confirm({ select = true }),
-                -- ["<C-Space>"] = cmp.mapping.complete(),
-            }),
+
             sources = cmp.config.sources({
                 { name = 'nvim_lsp' },
+                { name = 'luasnip', option = { show_autosnippets = true, use_show_condition = false } },
+                { name = 'nvim_lsp_signature_help' },
                 { name = 'path' },
-                { name = 'luasnip' }, -- For luasnip users.
-            }, {
+            },
+            {
                 { name = 'buffer' },
-            })
+            }),
+
+            mapping = cmp.mapping.preset.insert({
+                ["<C-s>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.select_next_item()
+                    elseif luasnip.locally_jumpable(1) then
+                        luasnip.jump(1)
+                    else
+                        fallback()
+                    end
+                end, { "i", "s" }),
+
+                ["<C-d>"] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.select_prev_item()
+                    elseif luasnip.locally_jumpable(-1) then
+                        luasnip.jump(-1)
+                    else
+                        fallback()
+                    end
+                end, { "i", "s" }),
+
+                ['<C-f>'] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        if luasnip.expandable() then
+                            luasnip.expand()
+                        else
+                            cmp.confirm({
+                                select = true,
+                            })
+                        end
+                    else
+                        fallback()
+                    end
+                end),
+                -- ['<C-f>'] = cmp.mapping.confirm({ select = true }),
+                -- ['<C-d>'] = cmp.mapping.select_prev_item(cmp_select),
+                -- ['<C-s>'] = cmp.mapping.select_next_item(cmp_select),
+
+                -- ["<C-Space>"] = cmp.mapping.complete(),
+            }),
+        })
+        -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+        cmp.setup.cmdline({ '/', '?' }, {
+            mapping = cmp.mapping.preset.cmdline(),
+            sources = {
+                { name = 'buffer' },
+                { name = 'nvim_lsp_document_symbol' },
+            }
+        })
+
+        -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+        cmp.setup.cmdline(':', {
+            mapping = cmp.mapping.preset.cmdline(),
+            sources = cmp.config.sources({
+                { name = 'path' }
+            }, {
+                { name = 'cmdline' }
+            }),
+            matching = { disallow_symbol_nonprefix_matching = false }
         })
 
         vim.diagnostic.config({
