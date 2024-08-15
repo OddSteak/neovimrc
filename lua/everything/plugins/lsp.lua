@@ -8,8 +8,6 @@ return {
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-cmdline",
         "hrsh7th/nvim-cmp",
-        "hrsh7th/cmp-nvim-lsp-document-symbol",
-        "hrsh7th/cmp-nvim-lsp-signature-help",
         "L3MON4D3/LuaSnip",
         "rafamadriz/friendly-snippets",
         "saadparwaiz1/cmp_luasnip",
@@ -29,6 +27,8 @@ return {
             {},
             vim.lsp.protocol.make_client_capabilities(),
             cmp_lsp.default_capabilities())
+        -- for snippets
+        capabilities.textDocument.completion.completionItem.snippetSupport = true
 
         require("fidget").setup({})
         require("mason").setup()
@@ -60,7 +60,10 @@ return {
                                 diagnostics = {
                                     globals = { "vim", "it", "describe", "before_each", "after_each" },
                                     disable = { 'missing-fields' },
-                                }
+                                },
+                                completion = {
+                                    callSnippet = "both"
+                                },
                             }
                         }
                     }
@@ -69,9 +72,12 @@ return {
                 ["clangd"] = function()
                     local lspconfig = require("lspconfig")
                     lspconfig.clangd.setup {
+                        capabilities = capabilities,
                         cmd = {
                             "clangd",
-                            "--fallback-style=Webkit"
+                            "--fallback-style=Webkit",
+                            "--background-index", "--suggest-missing-includes",
+                            "--all-scopes-completion", "--completion-style=detailed",
                         }
                     }
                 end,
@@ -96,14 +102,13 @@ return {
             },
 
             sources = cmp.config.sources({
-                { name = 'nvim_lsp' },
-                { name = 'luasnip', option = { show_autosnippets = true, use_show_condition = false } },
-                { name = 'nvim_lsp_signature_help' },
-                { name = 'path' },
-            },
-            {
-                { name = 'buffer' },
-            }),
+                    { name = 'luasnip', option = { show_autosnippets = true, use_show_condition = false } },
+                    { name = 'nvim_lsp' },
+                    { name = 'path' },
+                },
+                {
+                    { name = 'buffer' },
+                }),
 
             mapping = cmp.mapping.preset.insert({
                 ["<C-s>"] = cmp.mapping(function(fallback)
@@ -151,7 +156,6 @@ return {
             mapping = cmp.mapping.preset.cmdline(),
             sources = {
                 { name = 'buffer' },
-                { name = 'nvim_lsp_document_symbol' },
             }
         })
 
