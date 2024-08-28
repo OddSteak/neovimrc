@@ -8,6 +8,7 @@ return {
     },
 
     config = function()
+        -- C-q sends to quick fix list
         require('telescope').setup({})
 
         local builtin = require('telescope.builtin')

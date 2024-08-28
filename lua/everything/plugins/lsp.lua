@@ -10,8 +10,10 @@ return {
         "hrsh7th/nvim-cmp",
         "L3MON4D3/LuaSnip",
         "rafamadriz/friendly-snippets",
+        "hrsh7th/cmp-nvim-lsp-signature-help",
         "saadparwaiz1/cmp_luasnip",
         "j-hui/fidget.nvim",
+        "github/copilot.vim",
         { 'folke/neodev.nvim', opts = {} },
     },
 
@@ -102,8 +104,9 @@ return {
             },
 
             sources = cmp.config.sources({
-                    { name = 'luasnip', option = { show_autosnippets = true, use_show_condition = false } },
+                    { name = 'luasnip',                option = { show_autosnippets = true, use_show_condition = false } },
                     { name = 'nvim_lsp' },
+                    { name = 'nvim_lsp_signature_help' },
                     { name = 'path' },
                 },
                 {
@@ -181,5 +184,7 @@ return {
                 prefix = "",
             },
         })
+        vim.cmd("Copilot disable")
+
     end
 }
