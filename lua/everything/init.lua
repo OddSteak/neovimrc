@@ -132,16 +132,16 @@ autocmd('LspAttach', {
 })
 
 -- Hyprlang LSP
-vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
-    pattern = { "*.hl", "hypr*.conf" },
-    callback = function(event)
-        vim.lsp.start {
-            name = "hyprlang",
-            cmd = { "/home/dell/go/bin/hyprls" },
-            root_dir = vim.fn.getcwd(),
-        }
-    end
-})
+-- vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
+--     pattern = { "*.hl", "hypr*.conf" },
+--     callback = function(event)
+--         vim.lsp.start {
+--             name = "hyprlang",
+--             cmd = { "/home/dell/go/bin/hyprls" },
+--             root_dir = vim.fn.getcwd(),
+--         }
+--     end
+-- })
 
 -- don't continue comment in new line
 vim.api.nvim_create_autocmd("BufEnter", {
