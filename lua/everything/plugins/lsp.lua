@@ -37,8 +37,10 @@ return {
         require("mason-lspconfig").setup({
             ensure_installed = {
                 "cssls",
+                "html",
                 "lua_ls",
-                "pylsp",
+                "pyright",
+                "ruff",
                 "bashls",
                 "clangd",
                 "sqlls",
@@ -87,33 +89,35 @@ return {
                     }
                 end,
 
-                ["pylsp"] = function()
+                ["pyright"] = function()
                     local lspconfig = require("lspconfig")
-                    lspconfig.pylsp.setup {
-                        filetypes = { 'python' },
+                    lspconfig.pyright.setup({
+                        capabilities = capabilities,
                         settings = {
-                            configurationSources = { "flake8" },
-                            formatCommand = { "black" },
-                            pylsp = {
-                                plugins = {
-                                    -- jedi_completion = {fuzzy = true},
-                                    -- jedi_completion = {eager=true},
-                                    jedi_completion = {
-                                        include_params = true,
-                                    },
-                                    jedi_signature_help = { enabled = true },
-                                    jedi = {
-                                        extra_paths = { '~/projects/work_odoo/odoo14', '~/projects/work_odoo/odoo14' },
-                                        -- environment = {"odoo"},
-                                    },
-                                    pyflakes = { enabled = true },
-                                    -- pylint = {args = {'--ignore=E501,E231', '-'}, enabled=true, debounce=200},
-                                    pylsp_mypy = { enabled = false },
-                                    pycodestyle = {
-                                        enabled = true,
-                                        ignore = { 'E501', 'E231' },
-                                        maxLineLength = 120 },
-                                    yapf = { enabled = true }
+                            python = {
+                                analysis = {
+                                    autoSearchPaths = true,
+                                    diagnosticMode = "openFilesOnly",
+                                    useLibraryCodeForTypes = true,
+                                    autoImportCompletions = true
+                                }
+                            }
+                        }
+                    })
+                end,
+
+                ["ruff"] = function()
+                    local lspconfig = require("lspconfig")
+
+                    lspconfig.ruff.setup {
+                        capabilities = capabilities,
+                        settings = {
+                            lint = {
+                                -- https://docs.astral.sh/ruff/rules/#pydocstyle-d
+                                select = {"D"},
+                                pydocstyle = {
+                                    -- https://docs.astral.sh/ruff/settings/#lintpydocstyle
+                                    convention = "google"
                                 }
                             }
                         }
