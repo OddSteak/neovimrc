@@ -1,11 +1,10 @@
 function ColorMyPencils()
-    local color = "rose-pine-main"
-    -- vim.cmd("colorscheme rose-pine-main")
+    local color = "tokyonight"
     vim.cmd.colorscheme(color)
 
-    -- vim.api.nvim_set_hl(0, "Normal", { bg = "#1F1828" })
-    -- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#1F1828" })
-    -- vim.api.nvim_set_hl(0, "NormalNC", { bg = "#1F1828" })
+    -- vim.api.nvim_set_hl(0, "Normal", { bg = "#000000" })
+    -- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#000000" })
+    -- vim.api.nvim_set_hl(0, "NormalNC", { bg = "#000000" })
 end
 
 return {
@@ -37,8 +36,8 @@ return {
         name = "rose-pine",
         config = function()
             require("rose-pine").setup({
-                variant = "moon", -- auto, main, moon, or dawn
-                dark_variant = "moon", -- main, moon, or dawn
+                variant = "main", -- auto, main, moon, or dawn
+                dark_variant = "main", -- main, moon, or dawn
                 dim_inactive_windows = false,
                 extend_background_behind_borders = true,
 

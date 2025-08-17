@@ -1,8 +1,31 @@
 return {
     "neovim/nvim-lspconfig",
     dependencies = {
-        "williamboman/mason.nvim",
-        "williamboman/mason-lspconfig.nvim",
+        'nvim-java/nvim-java',
+        'nvim-java/lua-async-await',
+        'nvim-java/nvim-java-refactor',
+        'nvim-java/nvim-java-core',
+        'nvim-java/nvim-java-test',
+        'nvim-java/nvim-java-dap',
+        'MunifTanjim/nui.nvim',
+        'neovim/nvim-lspconfig',
+        'mfussenegger/nvim-dap',
+        'rcarriga/nvim-dap-ui',
+        'nvim-neotest/nvim-nio',
+        {
+            'williamboman/mason.nvim',
+            version = "^1.0.0",
+            opts = {
+                registries = {
+                    'github:nvim-java/mason-registry',
+                    'github:mason-org/mason-registry',
+                },
+            },
+        },
+        {
+            "williamboman/mason-lspconfig.nvim",
+            version = "^1.0.0",
+        },
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
@@ -32,6 +55,7 @@ return {
         -- for snippets
         capabilities.textDocument.completion.completionItem.snippetSupport = true
 
+        require("java").setup()
         require("fidget").setup({})
         require("mason").setup()
         require("mason-lspconfig").setup({
@@ -49,6 +73,7 @@ return {
                 "marksman",
                 "jsonls",
                 "hyprls",
+                "jdtls",
             },
             handlers = {
                 function(server_name) -- default handler (optional)
