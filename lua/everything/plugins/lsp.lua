@@ -14,7 +14,6 @@ return {
         'nvim-neotest/nvim-nio',
         {
             'williamboman/mason.nvim',
-            version = "^1.0.0",
             opts = {
                 registries = {
                     'github:nvim-java/mason-registry',
@@ -22,10 +21,7 @@ return {
                 },
             },
         },
-        {
-            "williamboman/mason-lspconfig.nvim",
-            version = "^1.0.0",
-        },
+        "williamboman/mason-lspconfig.nvim",
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
@@ -55,6 +51,7 @@ return {
         -- for snippets
         capabilities.textDocument.completion.completionItem.snippetSupport = true
 
+        require("lspconfig").jdtls.setup({})
         require("java").setup()
         require("fidget").setup({})
         require("mason").setup()
@@ -73,7 +70,6 @@ return {
                 "marksman",
                 "jsonls",
                 "hyprls",
-                "jdtls",
             },
             handlers = {
                 function(server_name) -- default handler (optional)
