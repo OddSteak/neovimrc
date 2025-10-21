@@ -51,11 +51,19 @@ return {
         -- for snippets
         capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-        require("lspconfig").jdtls.setup({})
-        require("java").setup()
-        require("fidget").setup({})
-        require("mason").setup()
-        require("mason-lspconfig").setup({
+        vim.lsp.config('jdtls', {})
+        vim.lsp.enable('jdtls')
+
+        vim.lsp.config('java', {})
+        vim.lsp.enable('java')
+
+        vim.lsp.config('fidget', {})
+        vim.lsp.enable('fidget')
+
+        vim.lsp.config('mason', {})
+        vim.lsp.enable('mason')
+
+        vim.lsp.config("mason-lspconfig", {
             ensure_installed = {
                 "cssls",
                 "html",
@@ -73,14 +81,14 @@ return {
             },
             handlers = {
                 function(server_name) -- default handler (optional)
-                    require("lspconfig")[server_name].setup {
+                    vim.lsp.config(server_name, {
                         capabilities = capabilities
-                    }
+                    })
+                    vim.lsp.enable(server_name)
                 end,
 
                 ["lua_ls"] = function()
-                    local lspconfig = require("lspconfig")
-                    lspconfig.lua_ls.setup {
+                    vim.lsp.config('luals', {
                         capabilities = capabilities,
                         settings = {
                             Lua = {
@@ -93,12 +101,12 @@ return {
                                 },
                             }
                         }
-                    }
+                    })
+                    vim.lsp.enable('luals')
                 end,
 
                 ["clangd"] = function()
-                    local lspconfig = require("lspconfig")
-                    lspconfig.clangd.setup {
+                    vim.lsp.config('clangd', {
                         capabilities = capabilities,
                         cmd = {
                             "clangd",
@@ -107,12 +115,12 @@ return {
                             "--all-scopes-completion", "--completion-style=detailed",
                             "--offset-encoding=utf-16",
                         }
-                    }
+                    })
+                    vim.lsp.enable('clangd')
                 end,
 
                 ["pyright"] = function()
-                    local lspconfig = require("lspconfig")
-                    lspconfig.pyright.setup({
+                    vim.lsp.config('pyright', {
                         capabilities = capabilities,
                         settings = {
                             python = {
@@ -125,29 +133,31 @@ return {
                             }
                         }
                     })
+
+                    vim.lsp.enable('pyright')
                 end,
 
                 ["ruff"] = function()
-                    local lspconfig = require("lspconfig")
-
-                    lspconfig.ruff.setup {
+                    vim.lsp.config('ruff', {
                         capabilities = capabilities,
                         settings = {
                             lint = {
                                 -- https://docs.astral.sh/ruff/rules/#pydocstyle-d
-                                select = {"D"},
+                                select = { "D" },
                                 pydocstyle = {
                                     -- https://docs.astral.sh/ruff/settings/#lintpydocstyle
                                     convention = "google"
                                 }
                             }
                         }
-                    }
+                    })
+
+                    vim.lsp.enable('pyright')
                 end,
             }
         })
 
-        luasnip.config.set_config {
+        vim.lsp.config.luasnip = {
             history = true,
             updateevents = "TextChanged,TextChangedI",
             enable_autosnippets = true,
@@ -157,7 +167,7 @@ return {
         require("luasnip.loaders.from_vscode").lazy_load()
 
         -- local cmp_select = { behavior = cmp.SelectBehavior.Select }
-        cmp.setup({
+        vim.lsp.config('cmp', {
             snippet = {
                 expand = function(args)
                     luasnip.lsp_expand(args.body)
