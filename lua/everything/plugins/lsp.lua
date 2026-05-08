@@ -32,13 +32,13 @@ return {
         "hrsh7th/cmp-nvim-lsp-signature-help",
         "saadparwaiz1/cmp_luasnip",
         "j-hui/fidget.nvim",
-        "github/copilot.vim",
         { 'folke/neodev.nvim', opts = {} },
     },
 
     lazy = false,
 
     config = function()
+        require("lsp")
         local cmp = require('cmp')
         local cmp_lsp = require("cmp_nvim_lsp")
         local luasnip = require('luasnip')
@@ -51,33 +51,42 @@ return {
         -- for snippets
         capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-        vim.lsp.config('jdtls', {})
+        vim.lsp.config('jdtls', { capabilities = capabilities })
         vim.lsp.enable('jdtls')
 
-        vim.lsp.config('java', {})
+        vim.lsp.config('java', { capabilities = capabilities })
         vim.lsp.enable('java')
 
-        vim.lsp.config('fidget', {})
+        vim.lsp.config('fidget', { capabilities = capabilities })
         vim.lsp.enable('fidget')
 
-        vim.lsp.config('mason', {})
+        vim.lsp.config('mason', { capabilities = capabilities })
         vim.lsp.enable('mason')
 
-        vim.lsp.config("mason-lspconfig", {
+        vim.lsp.config('ts_ls', { capabilities = capabilities })
+        vim.lsp.enable('ts_ls')
+
+        -- vim.lsp.config('clangd', { capabilities = capabilities })
+        -- vim.lsp.enable('clangd')
+
+        vim.lsp.enable('pyright')
+        vim.lsp.enable('clangd')
+
+        require("mason-lspconfig").setup {
+            automatic_enable = true,
             ensure_installed = {
                 "cssls",
                 "html",
                 "lua_ls",
-                "pyright",
                 "ruff",
                 "bashls",
-                "clangd",
                 "sqlls",
                 "ts_ls",
                 "rust_analyzer",
                 "marksman",
                 "jsonls",
                 "hyprls",
+                "clangd",
             },
             handlers = {
                 function(server_name) -- default handler (optional)
@@ -105,37 +114,29 @@ return {
                     vim.lsp.enable('luals')
                 end,
 
-                ["clangd"] = function()
-                    vim.lsp.config('clangd', {
-                        capabilities = capabilities,
-                        cmd = {
-                            "clangd",
-                            "--fallback-style=Webkit",
-                            "--background-index", "--suggest-missing-includes",
-                            "--all-scopes-completion", "--completion-style=detailed",
-                            "--offset-encoding=utf-16",
-                        }
-                    })
-                    vim.lsp.enable('clangd')
-                end,
-
-                ["pyright"] = function()
-                    vim.lsp.config('pyright', {
-                        capabilities = capabilities,
-                        settings = {
-                            python = {
-                                analysis = {
-                                    autoSearchPaths = true,
-                                    diagnosticMode = "openFilesOnly",
-                                    useLibraryCodeForTypes = true,
-                                    autoImportCompletions = true
-                                }
-                            }
-                        }
-                    })
-
-                    vim.lsp.enable('pyright')
-                end,
+                -- ["clangd"] = function()
+                --     vim.lsp.config('clangd', {
+                --         capabilities = capabilities,
+                --         cmd = {
+                --             "clangd",
+                --             "--fallback-style=Webkit",
+                --             "--background-index", "--suggest-missing-includes",
+                --             "--all-scopes-completion", "--completion-style=detailed",
+                --             "--offset-encoding=utf-16",
+                --         },
+                --       root_markers = {
+                --         '.clangd',
+                --         '.clang-tidy',
+                --         '.clang-format',
+                --         'compile_commands.json',
+                --         'compile_flags.txt',
+                --         'configure.ac', -- AutoTools
+                --         '.git',
+                --         'jack'
+                --       },
+                --     })
+                --     vim.lsp.enable('clangd')
+                -- end,
 
                 ["ruff"] = function()
                     vim.lsp.config('ruff', {
@@ -152,10 +153,10 @@ return {
                         }
                     })
 
-                    vim.lsp.enable('pyright')
+                    vim.lsp.enable('ruff')
                 end,
             }
-        })
+        }
 
         vim.lsp.config.luasnip = {
             history = true,
@@ -167,7 +168,7 @@ return {
         require("luasnip.loaders.from_vscode").lazy_load()
 
         -- local cmp_select = { behavior = cmp.SelectBehavior.Select }
-        vim.lsp.config('cmp', {
+        cmp.setup({
             snippet = {
                 expand = function(args)
                     luasnip.lsp_expand(args.body)
@@ -255,6 +256,5 @@ return {
                 prefix = "",
             },
         })
-        vim.cmd("Copilot disable")
     end
 }
